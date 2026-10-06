@@ -31,10 +31,18 @@ df['Segment'] = df['Segment'].astype('category')
 
 print("\n=== Tipos de datos corregidos ===")
 print(df.dtypes)
-"""
-conteo_burlington= (df["City"]== "Burlington").sum()
-print(conteo_burlington)
-"""
-# Te devuelve solo los valores de la Columna_B donde la Columna_A es igual a tu valor
-resultados = df.loc[df['City'] == 'Burlington', 'Postal Code']
-print("Los resultados son %d",resultados)
+
+# 8. Buscar filas de Burlington que SÍ tengan código postal asignado
+burlington_con_cp = df[(df['City'] == 'Burlington') & (df["State"]== "Vermont") & (df['Postal Code'].notnull())]
+
+print("=== CÓDIGOS POSTALES ENCONTRADOS PARA BURLINGTON ===")
+print(burlington_con_cp[['City', 'State', 'Postal Code']].drop_duplicates())
+
+#9. Como no encontramos valores en Postal Code en la ciudad de Burlington-Vermount. Hay que buscar el codigo postal por otro lado
+# Encontre que el codigo postal de la zona este de Burlington es "05401"
+# Imputar el código postal 05401 para los registros de Burlington, Vermont
+df['Postal Code'] = df['Postal Code'].fillna('05401')
+
+# Verificar que ya no queden valores nulos en Postal Code
+print("=== VERIFICACIÓN DE NULOS EN POSTAL CODE ===")
+print(f"Cantidad de nulos restantes: {df['Postal Code'].isnull().sum()}")
