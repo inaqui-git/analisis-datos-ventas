@@ -46,3 +46,22 @@ df['Postal Code'] = df['Postal Code'].fillna('05401')
 # Verificar que ya no queden valores nulos en Postal Code
 print("=== VERIFICACIÓN DE NULOS EN POSTAL CODE ===")
 print(f"Cantidad de nulos restantes: {df['Postal Code'].isnull().sum()}")
+
+####################################################
+
+import matplotlib.pyplot as plt
+
+# Agrupar ventas por Categoria
+ventas_categoria = df.groupby('Category')['Sales'].sum().sort_values(ascending=False)
+
+# Crear el gráfico de barras
+plt.figure(figsize=(8, 5))
+ventas_categoria.plot(kind='bar', color='skyblue')
+plt.title('Ventas Totales por Categoría de Producto')
+plt.xlabel('Categoría')
+plt.ylabel('Ventas ($)')
+plt.tight_layout()
+
+# Guardar la imagen en tu proyecto
+plt.savefig('ventas_por_categoria.png')
+print("=== GRÁFICO GUARDADO COMO ventas_por_categoria.png ===")
